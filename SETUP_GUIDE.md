@@ -1,5 +1,9 @@
 # Smart Student Hub - Supabase Setup Guide
 
+## ⚠️ CRITICAL: Database Schema Must Be Applied First
+
+**Before using the application, you MUST run the database schema in Supabase or you will get "Database error saving new user" errors.**
+
 ## ✅ Credentials Configured
 
 Your Supabase credentials have been added to the project:
@@ -8,18 +12,23 @@ Your Supabase credentials have been added to the project:
 
 ## 🗄️ Database Setup
 
-### Step 1: Run the Database Schema
+### Step 1: Run the Database Schema (REQUIRED)
 
-1. Go to your Supabase dashboard: https://supabase.com/dashboard/project/rzmifojibyhvvwwgmosv
+**This step is MANDATORY - the app will not work without it:**
+
+1. **Go to your Supabase dashboard**: https://supabase.com/dashboard/project/rzmifojibyhvvwwgmosv
 2. Navigate to **SQL Editor** in the left sidebar
-3. Copy the entire contents of `database-schema.sql` file
-4. Paste it into the SQL Editor and click **Run**
+3. **Copy the ENTIRE contents** of the `database-schema.sql` file from this project
+4. **Paste it into the SQL Editor** and click **Run**
+5. **Wait for all queries to complete successfully** (you should see green checkmarks)
 
 This will create:
 - All necessary tables (profiles, students, institutions, etc.)
 - Row Level Security (RLS) policies for data protection
 - Triggers for automatic user profile creation
 - Sample data for testing
+
+**If you skip this step, you will get "Database error saving new user" when trying to sign up.**
 
 ### Step 2: Configure Authentication
 
