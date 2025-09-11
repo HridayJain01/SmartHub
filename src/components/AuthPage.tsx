@@ -81,6 +81,11 @@ export default function AuthPage() {
           setMessage({ type: 'error', text: result.error || 'Login failed' });
         }
       } else {
+        if (formData.password.length < 6) {
+          setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
+          return;
+        }
+        
         if (formData.password !== formData.confirmPassword) {
           setMessage({ type: 'error', text: 'Passwords do not match' });
           return;
