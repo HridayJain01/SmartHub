@@ -1,96 +1,103 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  User, 
-  Building2, 
-  Calendar, 
-  Users, 
+import {
+  User as UserIcon,
+  Building2,
+  Calendar,
+  Users,
   GraduationCap,
   Mail,
   Lock,
   ArrowLeft,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, Role } from '../contexts/AuthContext';
 
-const roles = [
+/** UI state for toast message */
+interface MessageState {
+  type: 'success' | 'error';
+  text: string;
+}
+
+/** Card model for role tiles */
+interface RoleCard {
+  id: Role;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+  color: string;
+  redirectPath: string;
+}
+
+const ROLE_CARDS: RoleCard[] = [
   {
-    id: 'student',
+    id: Role.Student,
     title: 'Student',
-    icon: User,
+    icon: UserIcon,
     description: 'Build your verified academic profile',
     color: 'from-blue-500 to-indigo-600',
-    redirectPath: '/student'
+    redirectPath: '/student',
   },
   {
-    id: 'institution',
+    id: Role.Institution,
     title: 'Institution',
     icon: Building2,
     description: 'Manage student data and reports',
     color: 'from-emerald-500 to-teal-600',
-    redirectPath: '/institution'
+    redirectPath: '/institution',
   },
   {
-    id: 'organizer',
+    id: Role.Organizer,
     title: 'Event Organizer',
     icon: Calendar,
     description: 'Create events and verify achievements',
     color: 'from-purple-500 to-violet-600',
-    redirectPath: '/organizer'
+    redirectPath: '/organizer',
   },
   {
-    id: 'recruiter',
+    id: Role.Recruiter,
     title: 'Recruiter',
     icon: Users,
     description: 'Discover verified talent',
     color: 'from-orange-500 to-red-600',
-    redirectPath: '/recruiter'
-  }
+    redirectPath: '/recruiter',
+  },
 ];
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [selectedRole, setSelectedRole] = useState('');
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: '',
-    confirmPassword: ''
-  });
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [formData, setFormData] = useState({ email: '', password: '', name: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
-  
+  const [message, setMessage] = useState<MessageState | null>(null);
+
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage({ type: '', text: '' });
+    setMessage(null);
 
     try {
       if (isLogin) {
         const result = await signIn(formData.email, formData.password);
-        if (result.success && result.user) {
-          const roleData = roles.find(r => r.id === result.user.role);
-          if (roleData) {
-            navigate(roleData.redirectPath);
-          }
+        if (result.success) {
+          const roleCard = ROLE_CARDS.find((r) => r.id === result.user.role);
+          navigate(roleCard ? roleCard.redirectPath : '/');
         } else {
-          setMessage({ type: 'error', text: result.error || 'Login failed' });
+          setMessage({ type: 'error', text: result.error });
         }
       } else {
         if (formData.password.length < 6) {
           setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
           return;
         }
-        
         if (formData.password !== formData.confirmPassword) {
           setMessage({ type: 'error', text: 'Passwords do not match' });
           return;
         }
-        
         if (!selectedRole) {
           setMessage({ type: 'error', text: 'Please select a role' });
           return;
@@ -98,15 +105,15 @@ export default function AuthPage() {
 
         const result = await signUp(formData.email, formData.password, selectedRole, formData.name);
         if (result.success) {
-          setMessage({ 
-            type: 'success', 
-            text: 'Account created successfully! Please check your email for verification.' 
+          setMessage({
+            type: 'success',
+            text: 'Account created successfully! Please check your email for verification.',
           });
         } else {
-          setMessage({ type: 'error', text: result.error || 'Signup failed' });
+          setMessage({ type: 'error', text: result.error });
         }
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'An unexpected error occurred' });
     } finally {
       setLoading(false);
@@ -148,12 +155,14 @@ export default function AuthPage() {
             </div>
 
             {/* Message */}
-            {message.text && (
-              <div className={`mb-6 p-4 rounded-xl flex items-center space-x-2 ${
-                message.type === 'success' 
-                  ? 'bg-green-50 text-green-700 border border-green-200' 
-                  : 'bg-red-50 text-red-700 border border-red-200'
-              }`}>
+            {message && (
+              <div
+                className={`mb-6 p-4 rounded-xl flex items-center space-x-2 ${
+                  message.type === 'success'
+                    ? 'bg-green-50 text-green-700 border border-green-200'
+                    : 'bg-red-50 text-red-700 border border-red-200'
+                }`}
+              >
                 {message.type === 'success' ? (
                   <CheckCircle className="w-5 h-5 flex-shrink-0" />
                 ) : (
@@ -166,11 +175,9 @@ export default function AuthPage() {
             {/* Role Selection (for signup) */}
             {!isLogin && (
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  Select Your Role
-                </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">Select Your Role</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {roles.map((role) => {
+                  {ROLE_CARDS.map((role) => {
                     const Icon = role.icon;
                     return (
                       <button
@@ -196,13 +203,11 @@ export default function AuthPage() {
               {/* Name (for signup) */}
               {!isLogin && (
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Full Name
-                  </label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                     placeholder="Enter your full name"
                     required
@@ -212,15 +217,13 @@ export default function AuthPage() {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email Address
-                </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                     placeholder="Enter your email"
                     required
@@ -230,15 +233,13 @@ export default function AuthPage() {
 
               {/* Password */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Password
-                </label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                   <input
                     type="password"
                     value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                     placeholder="Enter your password"
                     required
@@ -249,15 +250,13 @@ export default function AuthPage() {
               {/* Confirm Password (for signup) */}
               {!isLogin && (
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Confirm Password
-                  </label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
                     <input
                       type="password"
                       value={formData.confirmPassword}
-                      onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                       className="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                       placeholder="Confirm your password"
                       required
@@ -276,8 +275,10 @@ export default function AuthPage() {
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                   </div>
+                ) : isLogin ? (
+                  'Sign In'
                 ) : (
-                  isLogin ? 'Sign In' : 'Create Account'
+                  'Create Account'
                 )}
               </button>
             </form>
@@ -287,15 +288,12 @@ export default function AuthPage() {
               <button
                 onClick={() => {
                   setIsLogin(!isLogin);
-                  setMessage({ type: '', text: '' });
-                  setSelectedRole('');
+                  setMessage(null);
+                  setSelectedRole(null);
                 }}
                 className="text-indigo-600 hover:text-indigo-500 font-semibold"
               >
-                {isLogin 
-                  ? "Don't have an account? Sign up" 
-                  : "Already have an account? Sign in"
-                }
+                {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
               </button>
             </div>
           </div>
