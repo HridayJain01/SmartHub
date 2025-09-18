@@ -98,7 +98,7 @@ export default function LandingPage() {
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Smart Student Hub
+                  Student Hub
               </h1>
             </div>
             <div className="flex items-center space-x-4">
