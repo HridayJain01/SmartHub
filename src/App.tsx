@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SaarthiChatBox from './components/SaarthiChatBox';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
@@ -21,43 +22,46 @@ function AppRoutes() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route 
-        path="/student/*" 
-        element={
-          user && user.role === 'student' ? 
-          <StudentDashboard /> : 
-          <Navigate to="/auth" replace />
-        } 
-      />
-      <Route 
-        path="/institution/*" 
-        element={
-          user && user.role === 'institution' ? 
-          <InstitutionDashboard /> : 
-          <Navigate to="/auth" replace />
-        } 
-      />
-      <Route 
-        path="/organizer/*" 
-        element={
-          user && user.role === 'organizer' ? 
-          <OrganizerDashboard /> : 
-          <Navigate to="/auth" replace />
-        } 
-      />
-      <Route 
-        path="/recruiter/*" 
-        element={
-          user && user.role === 'recruiter' ? 
-          <RecruiterDashboard /> : 
-          <Navigate to="/auth" replace />
-        } 
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route 
+          path="/student/*" 
+          element={
+            user && user.role === 'student' ? 
+            <StudentDashboard /> : 
+            <Navigate to="/auth" replace />
+          } 
+        />
+        <Route 
+          path="/institution/*" 
+          element={
+            user && user.role === 'institution' ? 
+            <InstitutionDashboard /> : 
+            <Navigate to="/auth" replace />
+          } 
+        />
+        <Route 
+          path="/organizer/*" 
+          element={
+            user && user.role === 'organizer' ? 
+            <OrganizerDashboard /> : 
+            <Navigate to="/auth" replace />
+          } 
+        />
+        <Route 
+          path="/recruiter/*" 
+          element={
+            user && user.role === 'recruiter' ? 
+            <RecruiterDashboard /> : 
+            <Navigate to="/auth" replace />
+          } 
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <SaarthiChatBox />
+    </div>
   );
 }
 
