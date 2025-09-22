@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
 import StudentDashboard from './components/dashboards/StudentDashboard';
-import InstitutionDashboard from './components/dashboards/InstitutionDashboard';
+import InstitutionDashboard from './components/dashboards/Institute/InstitutionDashboard';
 import OrganizerDashboard from './components/dashboards/OrganizerDashboard';
 import RecruiterDashboard from './components/dashboards/RecruiterDashboard';
 import { AuthProvider, useAuth } from './contexts/AuthContext';

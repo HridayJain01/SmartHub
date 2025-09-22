@@ -1,0 +1,392 @@
+{
+  "students": [
+    {
+      "full_name": "Alex Johnson",
+      "student_id": "STU001",
+      "institution_id": "INST-0001",
+      "date_of_birth": "2003-09-18",
+      "gender": "Male",
+      "category": "General",
+      "contact": {
+        "email": "alex.johnson@university.edu",
+        "mobile_number": "+91-9000000001"
+      },
+      "government_id": {
+        "type": "Aadhaar",
+        "number": "1234-5678-9012"
+      },
+      "profile_media": {
+        "photo_url": "https://cdn.example.com/students/STU001/photo.jpg",
+        "signature_url": "https://cdn.example.com/students/STU001/signature.jpg"
+      },
+      "address": {
+        "line1": "Flat 4B, Green Meadows",
+        "line2": "Baner",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "pincode": "411045"
+      },
+      "academic_details": {
+        "program_name": "B.Tech",
+        "branch": "Computer Engineering",
+        "specialization": "Computer",
+        "year_semester": {
+          "year": 4,
+          "semester": 7
+        },
+        "enrollment_number": "ENR-2021-COMP-001",
+        "roll_number": "COMP-1701",
+        "ssc": {
+          "board": "CBSE",
+          "marks": 92.4,
+          "seat_number": "CBSE-10-2020-99001",
+          "year_of_passing": 2020
+        },
+        "hsc": {
+          "board": "CBSE",
+          "marks": 91.2,
+          "seat_number": "CBSE-12-2022-88001",
+          "year_of_passing": 2022
+        },
+        "last_attended_school_college": "St. Mary’s Junior College, Pune",
+        "entrance_exam": {
+          "name": "MHT-CET",
+          "score": 98.1
+        }
+      },
+      "bank_details": {
+        "account_holder": "Alex Johnson",
+        "bank_name": "HDFC Bank",
+        "account_number_masked": "XXXXXXX4512",
+        "ifsc": "HDFC0001234"
+      },
+      "emergency_contact": {
+        "name": "Robert Johnson",
+        "relation": "Father",
+        "mobile_number": "+91-9000001001"
+      },
+      "enrollment_date": "2022-08-01",
+      "graduation_date": null,
+      "open_to_work": true,
+      "verified_status": true,
+      "about_me": "Final-year Computer Engineering student interested in backend and distributed systems.",
+      "documents": [
+        {"doc_type": "ssc_marksheet", "file_url": "https://cdn.example.com/students/STU001/ssc.pdf", "verified_status": true, "uploaded_at": "2022-08-01T10:00:00Z"},
+        {"doc_type": "hsc_marksheet", "file_url": "https://cdn.example.com/students/STU001/hsc.pdf", "verified_status": true, "uploaded_at": "2022-08-01T10:02:00Z"},
+        {"doc_type": "aadhaar", "file_url": "https://cdn.example.com/students/STU001/aadhaar.jpg", "verified_status": true, "uploaded_at": "2022-08-01T10:05:00Z"},
+        {"doc_type": "photo", "file_url": "https://cdn.example.com/students/STU001/photo.jpg", "verified_status": true, "uploaded_at": "2022-08-01T10:06:00Z"},
+        {"doc_type": "signature", "file_url": "https://cdn.example.com/students/STU001/signature.jpg", "verified_status": true, "uploaded_at": "2022-08-01T10:06:30Z"},
+        {"doc_type": "school_leaving_certificate", "file_url": "https://cdn.example.com/students/STU001/slc.pdf", "verified_status": true, "uploaded_at": "2022-08-02T09:00:00Z"}
+      ],
+      "current_cgpa": 8.7
+    },
+    {
+      "full_name": "Sarah Chen",
+      "student_id": "STU002",
+      "institution_id": "INST-0001",
+      "date_of_birth": "2004-03-02",
+      "gender": "Female",
+      "category": "OBC",
+      "contact": {
+        "email": "sarah.chen@university.edu",
+        "mobile_number": "+91-9000000002"
+      },
+      "government_id": {
+        "type": "Aadhaar",
+        "number": "2345-6789-0123"
+      },
+      "profile_media": {
+        "photo_url": "https://cdn.example.com/students/STU002/photo.jpg",
+        "signature_url": "https://cdn.example.com/students/STU002/signature.jpg"
+      },
+      "address": {
+        "line1": "Sunshine Apartments, 7/2",
+        "line2": "Aundh",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "pincode": "411007"
+      },
+      "academic_details": {
+        "program_name": "B.Tech",
+        "branch": "Electronics & Telecommunication",
+        "specialization": "Electronics and Telecommunication",
+        "year_semester": {
+          "year": 3,
+          "semester": 6
+        },
+        "enrollment_number": "ENR-2022-ETC-002",
+        "roll_number": "ETC-1620",
+        "ssc": {
+          "board": "ICSE",
+          "marks": 94.1,
+          "seat_number": "ICSE-10-2020-77002",
+          "year_of_passing": 2020
+        },
+        "hsc": {
+          "board": "State Board",
+          "marks": 92.0,
+          "seat_number": "MSBSHSE-12-2022-66002",
+          "year_of_passing": 2022
+        },
+        "last_attended_school_college": "Symbiosis Junior College, Pune",
+        "entrance_exam": {
+          "name": "JEE (Main)",
+          "score": 95.6
+        }
+      },
+      "bank_details": {
+        "account_holder": "Sarah Chen",
+        "bank_name": "SBI",
+        "account_number_masked": "XXXXXX9031",
+        "ifsc": "SBIN0000456"
+      },
+      "emergency_contact": {
+        "name": "Lily Chen",
+        "relation": "Mother",
+        "mobile_number": "+91-9000001002"
+      },
+      "enrollment_date": "2022-08-01",
+      "graduation_date": null,
+      "open_to_work": false,
+      "verified_status": true,
+      "about_me": "Electronics & Telecommunication student focusing on embedded systems.",
+      "documents": [
+        {"doc_type": "ssc_marksheet", "file_url": "https://cdn.example.com/students/STU002/ssc.pdf", "verified_status": true, "uploaded_at": "2022-08-03T10:00:00Z"},
+        {"doc_type": "hsc_marksheet", "file_url": "https://cdn.example.com/students/STU002/hsc.pdf", "verified_status": true, "uploaded_at": "2022-08-03T10:03:00Z"},
+        {"doc_type": "aadhaar", "file_url": "https://cdn.example.com/students/STU002/aadhaar.jpg", "verified_status": true, "uploaded_at": "2022-08-03T10:05:00Z"},
+        {"doc_type": "photo", "file_url": "https://cdn.example.com/students/STU002/photo.jpg", "verified_status": true, "uploaded_at": "2022-08-03T10:06:00Z"}
+      ],
+      "current_cgpa": 9.1
+    },
+    {
+      "full_name": "Michael Rodriguez",
+      "student_id": "STU003",
+      "institution_id": "INST-0001",
+      "date_of_birth": "2004-11-05",
+      "gender": "Male",
+      "category": "SC",
+      "contact": {
+        "email": "michael.r@university.edu",
+        "mobile_number": "+91-9000000003"
+      },
+      "government_id": {
+        "type": "Aadhaar",
+        "number": "3456-7890-1234"
+      },
+      "profile_media": {
+        "photo_url": "https://cdn.example.com/students/STU003/photo.jpg",
+        "signature_url": "https://cdn.example.com/students/STU003/signature.jpg"
+      },
+      "address": {
+        "line1": "Plot 22, Sai Nagar",
+        "line2": "Kothrud",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "pincode": "411038"
+      },
+      "academic_details": {
+        "program_name": "B.Tech",
+        "branch": "Information Technology",
+        "specialization": "IT",
+        "year_semester": {
+          "year": 3,
+          "semester": 5
+        },
+        "enrollment_number": "ENR-2022-IT-003",
+        "roll_number": "IT-1523",
+        "ssc": {
+          "board": "State Board",
+          "marks": 88.6,
+          "seat_number": "MSBSHSE-10-2020-55003",
+          "year_of_passing": 2020
+        },
+        "hsc": {
+          "board": "State Board",
+          "marks": 86.4,
+          "seat_number": "MSBSHSE-12-2022-44003",
+          "year_of_passing": 2022
+        },
+        "last_attended_school_college": "City Junior College, Pune",
+        "entrance_exam": {
+          "name": "MHT-CET",
+          "score": 92.3
+        }
+      },
+      "bank_details": {
+        "account_holder": "Michael Rodriguez",
+        "bank_name": "ICICI Bank",
+        "account_number_masked": "XXXXXX2209",
+        "ifsc": "ICIC0000789"
+      },
+      "emergency_contact": {
+        "name": "Ana Rodriguez",
+        "relation": "Mother",
+        "mobile_number": "+91-9000001003"
+      },
+      "enrollment_date": "2022-08-01",
+      "graduation_date": null,
+      "open_to_work": true,
+      "verified_status": false,
+      "about_me": "IT student learning cloud and DevOps.",
+      "documents": [
+        {"doc_type": "ssc_marksheet", "file_url": "https://cdn.example.com/students/STU003/ssc.pdf", "verified_status": true, "uploaded_at": "2022-08-04T09:00:00Z"},
+        {"doc_type": "hsc_marksheet", "file_url": "https://cdn.example.com/students/STU003/hsc.pdf", "verified_status": true, "uploaded_at": "2022-08-04T09:03:00Z"},
+        {"doc_type": "aadhaar", "file_url": "https://cdn.example.com/students/STU003/aadhaar.jpg", "verified_status": false, "uploaded_at": "2022-08-04T09:05:00Z"}
+      ],
+      "current_cgpa": 8.3
+    },
+    {
+      "full_name": "Priya Nair",
+      "student_id": "STU004",
+      "institution_id": "INST-0001",
+      "date_of_birth": "2005-01-24",
+      "gender": "Female",
+      "category": "General",
+      "contact": {
+        "email": "priya.nair@university.edu",
+        "mobile_number": "+91-9000000004"
+      },
+      "government_id": {
+        "type": "Aadhaar",
+        "number": "4567-8901-2345"
+      },
+      "profile_media": {
+        "photo_url": "https://cdn.example.com/students/STU004/photo.jpg",
+        "signature_url": "https://cdn.example.com/students/STU004/signature.jpg"
+      },
+      "address": {
+        "line1": "A-102, Riviera Towers",
+        "line2": "Viman Nagar",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "pincode": "411014"
+      },
+      "academic_details": {
+        "program_name": "B.Tech",
+        "branch": "Artificial Intelligence & Data Science",
+        "specialization": "AI & DS",
+        "year_semester": {
+          "year": 2,
+          "semester": 4
+        },
+        "enrollment_number": "ENR-2023-AIDS-004",
+        "roll_number": "AIDS-1204",
+        "ssc": {
+          "board": "CBSE",
+          "marks": 95.2,
+          "seat_number": "CBSE-10-2021-33004",
+          "year_of_passing": 2021
+        },
+        "hsc": {
+          "board": "CBSE",
+          "marks": 94.6,
+          "seat_number": "CBSE-12-2023-22004",
+          "year_of_passing": 2023
+        },
+        "last_attended_school_college": "DPS, Pune",
+        "entrance_exam": {
+          "name": "JEE (Main)",
+          "score": 97.3
+        }
+      },
+      "bank_details": {
+        "account_holder": "Priya Nair",
+        "bank_name": "Axis Bank",
+        "account_number_masked": "XXXXXXX7781",
+        "ifsc": "UTIB0000123"
+      },
+      "emergency_contact": {
+        "name": "Rajesh Nair",
+        "relation": "Father",
+        "mobile_number": "+91-9000001004"
+      },
+      "enrollment_date": "2023-08-01",
+      "graduation_date": null,
+      "open_to_work": false,
+      "verified_status": true,
+      "about_me": "AI & DS student enthusiastic about NLP and data visualization.",
+      "documents": [
+        {"doc_type": "ssc_marksheet", "file_url": "https://cdn.example.com/students/STU004/ssc.pdf", "verified_status": true, "uploaded_at": "2023-08-01T11:00:00Z"},
+        {"doc_type": "hsc_marksheet", "file_url": "https://cdn.example.com/students/STU004/hsc.pdf", "verified_status": true, "uploaded_at": "2023-08-01T11:03:00Z"},
+        {"doc_type": "photo", "file_url": "https://cdn.example.com/students/STU004/photo.jpg", "verified_status": true, "uploaded_at": "2023-08-01T11:05:00Z"}
+      ],
+      "current_cgpa": 9.0
+    },
+    {
+      "full_name": "Arjun Mehta",
+      "student_id": "STU005",
+      "institution_id": "INST-0001",
+      "date_of_birth": "2003-12-11",
+      "gender": "Male",
+      "category": "EWS",
+      "contact": {
+        "email": "arjun.mehta@university.edu",
+        "mobile_number": "+91-9000000005"
+      },
+      "government_id": {
+        "type": "Aadhaar",
+        "number": "5678-9012-3456"
+      },
+      "profile_media": {
+        "photo_url": "https://cdn.example.com/students/STU005/photo.jpg",
+        "signature_url": "https://cdn.example.com/students/STU005/signature.jpg"
+      },
+      "address": {
+        "line1": "Shivaji Housing, 5/9",
+        "line2": "Karve Nagar",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "pincode": "411052"
+      },
+      "academic_details": {
+        "program_name": "B.Tech",
+        "branch": "Information Technology",
+        "specialization": "IT",
+        "year_semester": {
+          "year": 1,
+          "semester": 2
+        },
+        "enrollment_number": "ENR-2024-IT-005",
+        "roll_number": "IT-1109",
+        "ssc": {
+          "board": "ICSE",
+          "marks": 89.3,
+          "seat_number": "ICSE-10-2022-40005",
+          "year_of_passing": 2022
+        },
+        "hsc": {
+          "board": "State Board",
+          "marks": 90.1,
+          "seat_number": "MSBSHSE-12-2024-30005",
+          "year_of_passing": 2024
+        },
+        "last_attended_school_college": "Modern Junior College, Pune",
+        "entrance_exam": {
+          "name": "MHT-CET",
+          "score": 93.8
+        }
+      },
+      "bank_details": {
+        "account_holder": "Arjun Mehta",
+        "bank_name": "Bank of Baroda",
+        "account_number_masked": "XXXXXX9902",
+        "ifsc": "BARB0XYZ123"
+      },
+      "emergency_contact": {
+        "name": "Seema Mehta",
+        "relation": "Mother",
+        "mobile_number": "+91-9000001005"
+      },
+      "enrollment_date": "2024-08-01",
+      "graduation_date": null,
+      "open_to_work": false,
+      "verified_status": false,
+      "about_me": "First-year IT student exploring frontend and mobile apps.",
+      "documents": [
+        {"doc_type": "aadhaar", "file_url": "https://cdn.example.com/students/STU005/aadhaar.jpg", "verified_status": false, "uploaded_at": "2024-08-02T08:00:00Z"},
+        {"doc_type": "photo", "file_url": "https://cdn.example.com/students/STU005/photo.jpg", "verified_status": true, "uploaded_at": "2024-08-02T08:01:00Z"}
+      ],
+      "current_cgpa": 8.1
+    }
+  ]
+}

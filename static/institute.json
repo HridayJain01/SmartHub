@@ -1,0 +1,63 @@
+{
+  "institution": {
+    "institution_id": "INST-0001",
+    "name": "St Johns Institute of Technology",
+    "address": "12 Knowledge Park, Sector 5",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "pincode": "411045",
+    "country": "India",
+    "contact_email": "contact@sjit.edu.in",
+    "contact_number": "+91-020-40001234",
+    "website_url": "https://www.sjit.edu.in",
+    "institution_type": "College",
+    "affiliation_university": "Savitribai Phule Pune University",
+    "accreditation_body": "NAAC",
+    "accreditation_status": "A+",
+    "accreditation_date": "2024-06-15",
+    "verified_status": true,
+    "admin_users": [
+      "principal@sjit.edu.in",
+      "registrar@sjit.edu.in",
+      "verifier1@sjit.edu.in"
+    ],
+    "logo_url": "https://cdn.example.com/assets/sjit-logo.png",
+    "created_at": "2023-04-01T09:30:00Z",
+    "updated_at": "2025-01-10T12:00:00Z"
+  },
+  "institution_statistics": {
+    "id": "STAT-0001",
+    "institution_id": "INST-0001",
+    "total_students_verified": 2,
+    "total_achievements_verified": 18,
+    "placement_rate": 0.87,
+    "top_domains": ["AI", "Web", "Finance"],
+    "last_updated": "2025-01-20T08:30:00Z"
+  },
+  "institution_documents": [
+    {
+      "doc_id": "DOC-0001",
+      "institution_id": "INST-0001",
+      "doc_type": "accreditation_certificate",
+      "file_url": "https://cdn.example.com/docs/sjit-naac-2024.pdf",
+      "verified_status": true,
+      "uploaded_at": "2024-06-16T10:05:00Z"
+    },
+    {
+      "doc_id": "DOC-0002",
+      "institution_id": "INST-0001",
+      "doc_type": "affiliation_letter",
+      "file_url": "https://cdn.example.com/docs/sppu-affiliation-2024.pdf",
+      "verified_status": true,
+      "uploaded_at": "2024-07-01T09:00:00Z"
+    },
+    {
+      "doc_id": "DOC-0003",
+      "institution_id": "INST-0001",
+      "doc_type": "MoU",
+      "file_url": "https://cdn.example.com/docs/mou-sjit-xyz-corp.pdf",
+      "verified_status": false,
+      "uploaded_at": "2024-12-05T14:20:00Z"
+    }
+  ]
+}
