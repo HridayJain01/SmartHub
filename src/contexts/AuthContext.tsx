@@ -23,7 +23,7 @@ export interface AppUser {
 export interface AuthContextType {
   user: AppUser | null;
   loading: boolean;
-  signUp: (email: string, password: string, role: Role, name: string) => Promise<SignUpResult>;
+  signUp: (email: string, password: string, role: Role, name: string, additionalData?: any) => Promise<SignUpResult>;
   signIn: (email: string, password: string) => Promise<SignInResult>;
   signOut: () => Promise<{ success: boolean }>;
 }
@@ -106,12 +106,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signUp = async (email: string, password: string, role: Role, name: string): Promise<SignUpResult> => {
+  const signUp = async (email: string, password: string, role: Role, name: string, additionalData?: any): Promise<SignUpResult> => {
     try {
+      const userData = { name, role, ...additionalData };
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { name, role } },
+        options: { data: userData },
       });
       if (error) return { success: false, error: error.message };
       return { success: true };
