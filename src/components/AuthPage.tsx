@@ -68,7 +68,18 @@ const ROLE_CARDS: RoleCard[] = [
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const [formData, setFormData] = useState({ email: '', password: '', name: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({ 
+    email: '', 
+    password: '', 
+    name: '', 
+    confirmPassword: '',
+    // Recruiter-specific fields
+    companyName: '',
+    phone: '',
+    address: '',
+    website: '',
+    industry: ''
+  });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<MessageState | null>(null);
 
@@ -102,8 +113,24 @@ export default function AuthPage() {
           setMessage({ type: 'error', text: 'Please select a role' });
           return;
         }
+        if (selectedRole === Role.Recruiter) {
+          if (!formData.companyName.trim()) {
+            setMessage({ type: 'error', text: 'Company name is required for recruiters' });
+            return;
+          }
+          if (!formData.industry.trim()) {
+            setMessage({ type: 'error', text: 'Industry is required for recruiters' });
+            return;
+          }
+        }
 
-        const result = await signUp(formData.email, formData.password, selectedRole, formData.name);
+        const result = await signUp(formData.email, formData.password, selectedRole, formData.name, {
+          companyName: formData.companyName,
+          phone: formData.phone,
+          address: formData.address,
+          website: formData.website,
+          industry: formData.industry
+        });
         if (result.success) {
           setMessage({
             type: 'success',
@@ -265,6 +292,79 @@ export default function AuthPage() {
                 </div>
               )}
 
+              {/* Recruiter-specific fields */}
+              {!isLogin && selectedRole === Role.Recruiter && (
+                <div className="space-y-6 border-t border-gray-200 pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900">Company Information</h3>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name *</label>
+                      <input
+                        type="text"
+                        value={formData.companyName}
+                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                        placeholder="Enter company name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Industry *</label>
+                      <select
+                        value={formData.industry}
+                        onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                        required
+                      >
+                        <option value="">Select industry</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Consulting">Consulting</option>
+                        <option value="Education">Education</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                      placeholder="Enter phone number"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Company Address</label>
+                    <textarea
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      rows={3}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                      placeholder="Enter company address"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Company Website</label>
+                    <input
+                      type="url"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                      placeholder="https://company.com"
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Submit Button */}
               <button
                 type="submit"
@@ -290,6 +390,17 @@ export default function AuthPage() {
                   setIsLogin(!isLogin);
                   setMessage(null);
                   setSelectedRole(null);
+                  setFormData({ 
+                    email: '', 
+                    password: '', 
+                    name: '', 
+                    confirmPassword: '',
+                    companyName: '',
+                    phone: '',
+                    address: '',
+                    website: '',
+                    industry: ''
+                  });
                 }}
                 className="text-indigo-600 hover:text-indigo-500 font-semibold"
               >
