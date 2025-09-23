@@ -3,7 +3,7 @@ import SaarthiChatBox from './components/SaarthiChatBox';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import AuthPage from './components/AuthPage';
-import StudentDashboard from './components/dashboards/StudentDashboard';
+import StudentDashboard from './components/dashboards/Student/StudentDashboard';
 import InstitutionDashboard from './components/dashboards/InstitutionDashboard';
 import OrganizerDashboard from './components/dashboards/OrganizerDashboard';
 import RecruiterDashboard from './components/dashboards/RecruiterDashboard';

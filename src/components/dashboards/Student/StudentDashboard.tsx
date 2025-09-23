@@ -15,20 +15,26 @@ import {
   Calendar,
   MapPin
 } from 'lucide-react';
-import DashboardLayout from '../layout/DashboardLayout';
+import DashboardLayout from '../../layout/DashboardLayout';
 
 const StudentProfile = () => {
   const [profileData, setProfileData] = useState({
-    name: 'Alex Johnson',
-    email: 'alex.johnson@university.edu',
-    phone: '+1 (555) 123-4567',
-    dateOfBirth: '1999-05-15',
-    about: 'Computer Science student passionate about AI and machine learning. Currently seeking internship opportunities in tech.',
-    skills: ['Python', 'JavaScript', 'React', 'Machine Learning', 'Data Analysis'],
-    isPublic: true
+    studentId: "STU2025A01",
+    photo: "",
+    name: "Alex Johnson",
+    gender: "Male",
+    dateOfBirth: "1999-05-15",
+    email: "alex.johnson@university.edu",
+    phone: "+1 (555) 123-4567",
+    address: "123 University Ave, City, Country",
+    course: "B.Tech Computer Science",
+    semester: "6th Semester",
+    enrollmentNo: "ENR202300123",
+    about:
+      "Computer Science student passionate about AI and machine learning. Currently seeking internship opportunities in tech.",
+    skills: ["Python", "JavaScript", "React", "Machine Learning", "Data Analysis"],
+    isPublic: true,
   });
-
-  const [editMode, setEditMode] = useState(false);
 
   return (
     <div className="space-y-8">
@@ -36,25 +42,27 @@ const StudentProfile = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
-          <p className="text-gray-600 mt-1">Manage your personal information and privacy settings</p>
+          <p className="text-gray-600 mt-1">
+            Personal, academic and contact details
+          </p>
         </div>
         <div className="flex items-center space-x-3">
           <button
-            onClick={() => setProfileData(prev => ({ ...prev, isPublic: !prev.isPublic }))}
+            onClick={() =>
+              setProfileData((prev) => ({ ...prev, isPublic: !prev.isPublic }))
+            }
             className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-colors ${
-              profileData.isPublic 
-                ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              profileData.isPublic
+                ? "bg-green-100 text-green-700 hover:bg-green-200"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
-            {profileData.isPublic ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-            <span>{profileData.isPublic ? 'Public' : 'Private'}</span>
-          </button>
-          <button
-            onClick={() => setEditMode(!editMode)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-          >
-            {editMode ? 'Save Changes' : 'Edit Profile'}
+            {profileData.isPublic ? (
+              <Eye className="w-4 h-4" />
+            ) : (
+              <EyeOff className="w-4 h-4" />
+            )}
+            <span>{profileData.isPublic ? "Public" : "Private"}</span>
           </button>
         </div>
       </div>
@@ -63,15 +71,29 @@ const StudentProfile = () => {
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div className="h-32 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
         <div className="px-8 pb-8">
+          {/* Profile Header */}
           <div className="flex items-start space-x-6 -mt-16">
-            <div className="w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center border-4 border-white">
-              <User className="w-16 h-16 text-gray-400" />
+            <div className="w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center border-4 border-white overflow-hidden">
+              {profileData.photo ? (
+                <img
+                  src={profileData.photo}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+              ) : (
+                <User className="w-16 h-16 text-gray-400" />
+              )}
             </div>
             <div className="pt-20 flex-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{profileData.name}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {profileData.name}
+                  </h2>
                   <p className="text-gray-600">{profileData.email}</p>
+                  <p className="text-sm text-gray-500">
+                    Student ID: {profileData.studentId}
+                  </p>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button className="p-2 text-gray-400 hover:text-blue-600 transition-colors">
@@ -84,51 +106,88 @@ const StudentProfile = () => {
               </div>
             </div>
           </div>
-          
-          <div className="mt-8 grid md:grid-cols-2 gap-8">
-            <div className="space-y-6">
+
+          {/* Info Grid */}
+          <div className="mt-8 grid md:grid-cols-2 gap-8 text-gray-800">
+            {/* Left Column */}
+            <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-                <input
-                  type="tel"
-                  value={profileData.phone}
-                  disabled={!editMode}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-60"
-                />
+                <p className="text-sm font-semibold text-gray-600">Gender</p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.gender}
+                </p>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Date of Birth</label>
-                <input
-                  type="date"
-                  value={profileData.dateOfBirth}
-                  disabled={!editMode}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-60"
-                />
+                <p className="text-sm font-semibold text-gray-600">
+                  Date of Birth
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.dateOfBirth}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-600">
+                  Mobile Number
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.phone}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-600">Address</p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.address}
+                </p>
               </div>
             </div>
-            <div className="space-y-6">
+
+            {/* Right Column */}
+            <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">About Me</label>
-                <textarea
-                  value={profileData.about}
-                  disabled={!editMode}
-                  rows={4}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-60"
-                />
+                <p className="text-sm font-semibold text-gray-600">
+                  Course / Program
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.course}
+                </p>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Skills</label>
-                <div className="flex flex-wrap gap-2">
-                  {profileData.skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-sm font-semibold text-gray-600">
+                  Year / Semester
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.semester}
+                </p>
               </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-600">
+                  Enrollment Number
+                </p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.enrollmentNo}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-600">About Me</p>
+                <p className="mt-1 text-base text-gray-900">
+                  {profileData.about}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Skills */}
+          <div className="mt-6">
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Skills</h3>
+            <div className="flex flex-wrap gap-2">
+              {profileData.skills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         </div>
