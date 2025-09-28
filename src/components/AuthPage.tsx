@@ -48,6 +48,14 @@ const ROLE_CARDS: RoleCard[] = [
     redirectPath: '/institution',
   },
   {
+    id: Role.Department,
+    title: 'Department',
+    icon: GraduationCap,
+    description: 'Manage faculty, onboarding & marks',
+    color: 'from-sky-500 to-blue-600',
+    redirectPath: '/department',
+  },
+  {
     id: Role.Organizer,
     title: 'Event Organizer',
     icon: Calendar,
@@ -68,7 +76,12 @@ const ROLE_CARDS: RoleCard[] = [
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const [formData, setFormData] = useState({ email: '', password: '', name: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    confirmPassword: '',
+  });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<MessageState | null>(null);
 
@@ -175,7 +188,9 @@ export default function AuthPage() {
             {/* Role Selection (for signup) */}
             {!isLogin && (
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">Select Your Role</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Select Your Role
+                </label>
                 <div className="grid grid-cols-2 gap-3">
                   {ROLE_CARDS.map((role) => {
                     const Icon = role.icon;

@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 export enum Role {
   Student = 'student',
   Institution = 'institution',
+  Department = 'department', 
   Organizer = 'organizer',
   Recruiter = 'recruiter',
 }
