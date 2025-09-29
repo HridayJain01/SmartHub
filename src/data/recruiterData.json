@@ -1,0 +1,46 @@
+{
+  "candidates": [
+    {
+      "id": 1,
+      "name": "Alex Johnson",
+      "program": "B.Tech Computer Science",
+      "cgpa": 8.7,
+      "skills": ["Python", "JavaScript", "React", "Machine Learning", "Data Analysis"],
+      "institution": "Tech University",
+      "graduationYear": 2024,
+      "achievements": 5,
+      "profilePublic": true,
+      "location": "California, USA"
+    },
+    {
+      "id": 2,
+      "name": "Sarah Chen",
+      "program": "B.Tech Electronics",
+      "cgpa": 9.1,
+      "skills": ["VLSI Design", "Circuit Analysis", "Python", "MATLAB", "Signal Processing"],
+      "institution": "State University",
+      "graduationYear": 2024,
+      "achievements": 8,
+      "profilePublic": true,
+      "location": "New York, USA"
+    },
+    {
+      "id": 3,
+      "name": "Michael Rodriguez",
+      "program": "B.Tech Mechanical",
+      "cgpa": 8.3,
+      "skills": ["CAD Design", "Finite Element Analysis", "Python", "Manufacturing"],
+      "institution": "Engineering College",
+      "graduationYear": 2025,
+      "achievements": 3,
+      "profilePublic": true,
+      "location": "Texas, USA"
+    }
+  ],
+  "institutionStats": [
+    { "name": "Tech University", "students": 2547, "avgCGPA": 8.2, "placementRate": 89 },
+    { "name": "State University", "students": 1834, "avgCGPA": 7.9, "placementRate": 92 },
+    { "name": "Engineering College", "students": 1205, "avgCGPA": 8.0, "placementRate": 85 },
+    { "name": "Science Institute", "students": 987, "avgCGPA": 8.4, "placementRate": 94 }
+  ]
+}

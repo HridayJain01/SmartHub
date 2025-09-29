@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { 
-  Search, 
-  Filter, 
-  Users, 
+import {
+  Search,
+  Filter,
+  Users,
   Download,
   Star,
   MapPin,
@@ -15,6 +15,28 @@ import {
   Building2
 } from 'lucide-react';
 import DashboardLayout from '../layout/DashboardLayout';
+import recruiterData from '../../data/recruiterData.json';
+
+// Define types for candidates and institution stats
+interface Candidate {
+  id: number;
+  name: string;
+  program: string;
+  cgpa: number;
+  skills: string[];
+  institution: string;
+  graduationYear: number;
+  achievements: number;
+  profilePublic: boolean;
+  location: string;
+}
+
+interface InstitutionStat {
+  name: string;
+  students: number;
+  avgCGPA: number;
+  placementRate: number;
+}
 
 const TalentSearch = () => {
   const [searchFilters, setSearchFilters] = useState({
@@ -26,44 +48,11 @@ const TalentSearch = () => {
     graduationYear: 'all'
   });
 
-  const [candidates] = useState([
-    {
-      id: 1,
-      name: 'Alex Johnson',
-      program: 'B.Tech Computer Science',
-      cgpa: 8.7,
-      skills: ['Python', 'JavaScript', 'React', 'Machine Learning', 'Data Analysis'],
-      institution: 'Tech University',
-      graduationYear: 2024,
-      achievements: 5,
-      profilePublic: true,
-      location: 'California, USA'
-    },
-    {
-      id: 2,
-      name: 'Sarah Chen',
-      program: 'B.Tech Electronics',
-      cgpa: 9.1,
-      skills: ['VLSI Design', 'Circuit Analysis', 'Python', 'MATLAB', 'Signal Processing'],
-      institution: 'State University',
-      graduationYear: 2024,
-      achievements: 8,
-      profilePublic: true,
-      location: 'New York, USA'
-    },
-    {
-      id: 3,
-      name: 'Michael Rodriguez',
-      program: 'B.Tech Mechanical',
-      cgpa: 8.3,
-      skills: ['CAD Design', 'Finite Element Analysis', 'Python', 'Manufacturing'],
-      institution: 'Engineering College',
-      graduationYear: 2025,
-      achievements: 3,
-      profilePublic: true,
-      location: 'Texas, USA'
-    }
-  ]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+
+  useEffect(() => {
+    setCandidates(recruiterData.candidates);
+  }, []);
 
   const filteredCandidates = candidates.filter(candidate => {
     const matchesCGPA = (!searchFilters.cgpaMin || candidate.cgpa >= parseFloat(searchFilters.cgpaMin)) &&
@@ -74,6 +63,30 @@ const TalentSearch = () => {
     );
     return matchesCGPA && matchesProgram && matchesSkills && candidate.profilePublic;
   });
+
+  const exportResults = () => {
+    const csvContent = [
+      ['Name', 'Program', 'CGPA', 'Skills', 'Institution', 'Graduation Year', 'Location'].join(','),
+      ...filteredCandidates.map(candidate => [
+        candidate.name,
+        candidate.program,
+        candidate.cgpa,
+        candidate.skills.join('; '),
+        candidate.institution,
+        candidate.graduationYear,
+        candidate.location
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'filtered_candidates.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="space-y-8">
@@ -87,7 +100,10 @@ const TalentSearch = () => {
             <Bookmark className="w-4 h-4 mr-2" />
             Saved Searches
           </button>
-          <button className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors flex items-center">
+          <button
+            onClick={exportResults}
+            className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors flex items-center"
+          >
             <Download className="w-4 h-4 mr-2" />
             Export Results
           </button>
@@ -279,12 +295,11 @@ const TalentSearch = () => {
 };
 
 const Analytics = () => {
-  const institutionStats = [
-    { name: 'Tech University', students: 2547, avgCGPA: 8.2, placementRate: 89 },
-    { name: 'State University', students: 1834, avgCGPA: 7.9, placementRate: 92 },
-    { name: 'Engineering College', students: 1205, avgCGPA: 8.0, placementRate: 85 },
-    { name: 'Science Institute', students: 987, avgCGPA: 8.4, placementRate: 94 }
-  ];
+  const [institutionStats, setInstitutionStats] = useState<InstitutionStat[]>([]);
+
+  useEffect(() => {
+    setInstitutionStats(recruiterData.institutionStats);
+  }, []);
 
   return (
     <div className="space-y-8">
