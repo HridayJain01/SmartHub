@@ -12,7 +12,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from 'lucide-react';
-import { useAuth, Role } from '../contexts/AuthContext';
+import { Role, useAuth } from '../contexts/AuthContext';
 
 /** UI state for toast message */
 interface MessageState {
@@ -37,7 +37,7 @@ const ROLE_CARDS: RoleCard[] = [
     icon: UserIcon,
     description: 'Build your verified academic profile',
     color: 'from-blue-500 to-indigo-600',
-    redirectPath: '/student',
+    redirectPath: '/student/dashboard',
   },
   {
     id: Role.Institution,
@@ -61,11 +61,11 @@ const ROLE_CARDS: RoleCard[] = [
     icon: Users,
     description: 'Discover verified talent',
     color: 'from-orange-500 to-red-600',
-    redirectPath: '/recruiter',
+    redirectPath: '/recruiter/dashboard',
   },
 ];
 
-export default function AuthPage() {
+const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [formData, setFormData] = useState({
@@ -73,7 +73,6 @@ export default function AuthPage() {
     password: '',
     name: '',
     confirmPassword: '',
-    // Recruiter-specific fields
     companyName: '',
     phone: '',
     address: '',
@@ -83,8 +82,8 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<MessageState | null>(null);
 
-  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+  const { signIn, signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +92,7 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
-        // 🔓 Department demo bypass (no Supabase):
+        // 🔓 Department demo bypass (no Supabase)
         const email = formData.email.trim().toLowerCase();
         const pass = formData.password;
         if (email === 'ittsec@gmail.com' && pass === 'it2026') {
@@ -102,7 +101,7 @@ export default function AuthPage() {
           return;
         }
 
-        // ✅ Everyone else: your existing Supabase-based auth via useAuth()
+        // ✅ Everyone else: Supabase auth
         const result = await signIn(formData.email, formData.password);
         if (result.success) {
           const roleCard = ROLE_CARDS.find((r) => r.id === result.user.role);
@@ -111,7 +110,7 @@ export default function AuthPage() {
           setMessage({ type: 'error', text: result.error });
         }
       } else {
-        // ✅ Keep your signup logic as-is
+        // ✅ Signup flow
         if (formData.password.length < 6) {
           setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
           return;
@@ -135,19 +134,13 @@ export default function AuthPage() {
           }
         }
 
-        const result = await signUp(
-          formData.email,
-          formData.password,
-          selectedRole,
-          formData.name,
-          {
-            companyName: formData.companyName,
-            phone: formData.phone,
-            address: formData.address,
-            website: formData.website,
-            industry: formData.industry,
-          }
-        );
+        const result = await signUp(formData.email, formData.password, selectedRole, formData.name, {
+          companyName: formData.companyName,
+          phone: formData.phone,
+          address: formData.address,
+          website: formData.website,
+          industry: formData.industry,
+        });
 
         if (result.success) {
           setMessage({
@@ -158,8 +151,9 @@ export default function AuthPage() {
           setMessage({ type: 'error', text: result.error });
         }
       }
-    } catch {
-      setMessage({ type: 'error', text: 'An unexpected error occurred' });
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' });
     } finally {
       setLoading(false);
     }
@@ -314,7 +308,6 @@ export default function AuthPage() {
               {!isLogin && selectedRole === Role.Recruiter && (
                 <div className="space-y-6 border-t border-gray-200 pt-6">
                   <h3 className="text-lg font-semibold text-gray-900">Company Information</h3>
-
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name *</label>
@@ -349,7 +342,7 @@ export default function AuthPage() {
                   </div>
 
                   <div>
-                    <label className="block text sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
                     <input
                       type="tel"
                       value={formData.phone}
@@ -428,11 +421,13 @@ export default function AuthPage() {
 
             {/* Demo hint */}
             <div className="mt-4 text-xs text-gray-500 text-center">
-              Demo Dept Login: <strong>ITtsec@gmail.com</strong> / <strong>it2026</strong>
+              Demo Dept Login: <strong>ittsec@gmail.com</strong> / <strong>it2026</strong>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default AuthPage;

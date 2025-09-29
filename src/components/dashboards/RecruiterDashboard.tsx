@@ -12,9 +12,230 @@ import {
   Eye,
   Bookmark,
   TrendingUp,
-  Building2
+  Building2,
+  User,
+  Phone,
+  Globe,
+  MapPin as LocationIcon,
+  Briefcase,
+  CheckCircle,
+  Clock,
+  XCircle
 } from 'lucide-react';
 import DashboardLayout from '../layout/DashboardLayout';
+import dummyUsers from '../../data/dummyUsers.json';
+
+const RecruiterProfile = () => {
+  const dummyRecruiter = dummyUsers.users.find((user) => user.role === 'recruiter');
+  const [profileData, setProfileData] = useState({
+    recruiterName: dummyRecruiter?.name || '',
+    companyName: dummyRecruiter?.companyName || '',
+    email: dummyRecruiter?.email || '',
+    phone: dummyRecruiter?.phone || '',
+    address: dummyRecruiter?.address || '',
+    website: dummyRecruiter?.website || '',
+    industry: dummyRecruiter?.industry || '',
+    verificationStatus: 'Verified' as 'Pending' | 'Verified' | 'Rejected',
+  });
+
+  const [editMode, setEditMode] = useState(false);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Verified': return 'bg-green-100 text-green-700';
+      case 'Pending': return 'bg-yellow-100 text-yellow-700';
+      case 'Rejected': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'Verified': return CheckCircle;
+      case 'Pending': return Clock;
+      case 'Rejected': return XCircle;
+      default: return Clock;
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Recruiter Profile</h1>
+          <p className="text-gray-600 mt-1">Manage your company information and verification status</p>
+        </div>
+        <button
+          onClick={() => setEditMode(!editMode)}
+          className="px-4 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-colors"
+        >
+          {editMode ? 'Save Changes' : 'Edit Profile'}
+        </button>
+      </div>
+
+      {/* Profile Card */}
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+        <div className="h-32 bg-gradient-to-r from-orange-500 to-red-600"></div>
+        <div className="px-8 pb-8">
+          <div className="flex items-start space-x-6 -mt-16">
+            <div className="w-32 h-32 bg-white rounded-2xl shadow-lg flex items-center justify-center border-4 border-white">
+              <Building2 className="w-16 h-16 text-gray-400" />
+            </div>
+            <div className="pt-20 flex-1">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{profileData.recruiterName}</h2>
+                  <p className="text-xl text-gray-700 font-semibold">{profileData.companyName}</p>
+                  <p className="text-gray-600">{profileData.email}</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {(() => {
+                    const StatusIcon = getStatusIcon(profileData.verificationStatus);
+                    return (
+                      <span className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium ${getStatusColor(profileData.verificationStatus)}`}>
+                        <StatusIcon className="w-4 h-4" />
+                        <span>{profileData.verificationStatus}</span>
+                      </span>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-8 grid md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name</label>
+                <input
+                  type="text"
+                  value={profileData.companyName}
+                  disabled={!editMode}
+                  onChange={(e) => setProfileData({ ...profileData, companyName: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-60"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Industry</label>
+                <select
+                  value={profileData.industry}
+                  disabled={!editMode}
+                  onChange={(e) => setProfileData({ ...profileData, industry: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-60"
+                >
+                  <option value="Technology">Technology</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Education">Education</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                <input
+                  type="tel"
+                  value={profileData.phone}
+                  disabled={!editMode}
+                  onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-60"
+                />
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Company Address</label>
+                <textarea
+                  value={profileData.address}
+                  disabled={!editMode}
+                  onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
+                  rows={3}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-60"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Company Website</label>
+                <input
+                  type="url"
+                  value={profileData.website}
+                  disabled={!editMode}
+                  onChange={(e) => setProfileData({ ...profileData, website: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-60"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Company Info Display */}
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+              <Phone className="w-5 h-5 text-orange-600" />
+              <div>
+                <p className="text-sm text-gray-500">Phone</p>
+                <p className="font-semibold text-gray-900">{profileData.phone}</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+              <Globe className="w-5 h-5 text-orange-600" />
+              <div>
+                <p className="text-sm text-gray-500">Website</p>
+                <a href={profileData.website} target="_blank" rel="noopener noreferrer" className="font-semibold text-orange-600 hover:text-orange-700">
+                  Visit Site
+                </a>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+              <Briefcase className="w-5 h-5 text-orange-600" />
+              <div>
+                <p className="text-sm text-gray-500">Industry</p>
+                <p className="font-semibold text-gray-900">{profileData.industry}</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+              <LocationIcon className="w-5 h-5 text-orange-600" />
+              <div>
+                <p className="text-sm text-gray-500">Location</p>
+                <p className="font-semibold text-gray-900">San Francisco, CA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Verification Status Card */}
+      {profileData.verificationStatus !== 'Verified' && (
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Verification Status</h3>
+          {profileData.verificationStatus === 'Pending' && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+              <div className="flex items-center space-x-3">
+                <Clock className="w-5 h-5 text-yellow-600" />
+                <div>
+                  <p className="font-semibold text-yellow-800">Verification Pending</p>
+                  <p className="text-yellow-700 text-sm">Your account is under review. You'll receive an email once verification is complete.</p>
+                </div>
+              </div>
+            </div>
+          )}
+          {profileData.verificationStatus === 'Rejected' && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="flex items-center space-x-3">
+                <XCircle className="w-5 h-5 text-red-600" />
+                <div>
+                  <p className="font-semibold text-red-800">Verification Rejected</p>
+                  <p className="text-red-700 text-sm">Please contact support to resolve verification issues.</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const TalentSearch = () => {
   const [searchFilters, setSearchFilters] = useState({
@@ -444,6 +665,13 @@ export default function RecruiterDashboard() {
   const menuItems = [
     { 
       path: '/recruiter', 
+      icon: User, 
+      label: 'Profile', 
+      color: 'text-orange-600', 
+      bgColor: 'bg-orange-50' 
+    },
+    { 
+      path: '/recruiter/search', 
       icon: Search, 
       label: 'Talent Search', 
       color: 'text-orange-600', 
@@ -465,7 +693,8 @@ export default function RecruiterDashboard() {
       menuItems={menuItems}
     >
       <Routes>
-        <Route path="/" element={<TalentSearch />} />
+        <Route path="/" element={<RecruiterProfile />} />
+        <Route path="/search" element={<TalentSearch />} />
         <Route path="/analytics" element={<Analytics />} />
       </Routes>
     </DashboardLayout>
