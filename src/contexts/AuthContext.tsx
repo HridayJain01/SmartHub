@@ -6,6 +6,7 @@ import dummyUsers from '../data/dummyUsers.json';
 export enum Role {
   Student = 'student',
   Institution = 'institution',
+  Department = 'department', 
   Organizer = 'organizer',
   Recruiter = 'recruiter',
 }

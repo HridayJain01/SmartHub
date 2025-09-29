@@ -12,9 +12,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from 'lucide-react';
-import { Role } from '../contexts/AuthContext';
-import dummyUsers from '../data/dummyUsers.json';
-import { useAuth } from '../contexts/AuthContext';
+import { Role, useAuth } from '../contexts/AuthContext';
 
 /** UI state for toast message */
 interface MessageState {
@@ -85,65 +83,76 @@ const AuthPage = () => {
   const [message, setMessage] = useState<MessageState | null>(null);
 
   const navigate = useNavigate();
-  const { signIn } = useAuth(); // Use the signIn method from AuthContext
+  const { signIn, signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
     setLoading(true);
     setMessage(null);
 
     try {
       if (isLogin) {
-        console.log('Attempting login...');
+        // 🔓 Department demo bypass (no Supabase)
+        const email = formData.email.trim().toLowerCase();
+        const pass = formData.password;
+        if (email === 'ittsec@gmail.com' && pass === 'it2026') {
+          sessionStorage.setItem('deptLogin', 'true');
+          navigate('/department');
+          return;
+        }
+
+        // ✅ Everyone else: Supabase auth
         const result = await signIn(formData.email, formData.password);
         if (result.success) {
-          console.log('Login successful:', result.user);
           const roleCard = ROLE_CARDS.find((r) => r.id === result.user.role);
-          const redirectPath = roleCard ? roleCard.redirectPath : '/';
-          console.log('Redirecting to:', redirectPath);
-          navigate(redirectPath); // Redirect after successful login
+          navigate(roleCard ? roleCard.redirectPath : '/');
         } else {
-          console.log('Login failed:', result.error);
           setMessage({ type: 'error', text: result.error });
         }
       } else {
-        console.log('Attempting signup...');
+        // ✅ Signup flow
         if (formData.password.length < 6) {
-          console.log('Signup failed: Password too short');
           setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
           return;
         }
         if (formData.password !== formData.confirmPassword) {
-          console.log('Signup failed: Passwords do not match');
           setMessage({ type: 'error', text: 'Passwords do not match' });
           return;
         }
         if (!selectedRole) {
-          console.log('Signup failed: Role not selected');
           setMessage({ type: 'error', text: 'Please select a role' });
           return;
         }
-        const newUser = {
-          id: dummyUsers.users.length + 1,
-          email: formData.email,
-          password: formData.password,
-          role: selectedRole,
-          name: formData.name,
-          companyName: formData.companyName || '',
-          phone: formData.phone || '',
-          address: formData.address || '',
-          website: formData.website || '',
-          industry: formData.industry || '',
-          isComplete: false,
-        };
-        dummyUsers.users.push(newUser);
-        console.log('Signup successful:', newUser);
-        setMessage({ type: 'success', text: 'Account created successfully! You can now log in.' });
-        setIsLogin(true);
+        if (selectedRole === Role.Recruiter) {
+          if (!formData.companyName.trim()) {
+            setMessage({ type: 'error', text: 'Company name is required for recruiters' });
+            return;
+          }
+          if (!formData.industry.trim()) {
+            setMessage({ type: 'error', text: 'Industry is required for recruiters' });
+            return;
+          }
+        }
+
+        const result = await signUp(formData.email, formData.password, selectedRole, formData.name, {
+          companyName: formData.companyName,
+          phone: formData.phone,
+          address: formData.address,
+          website: formData.website,
+          industry: formData.industry,
+        });
+
+        if (result.success) {
+          setMessage({
+            type: 'success',
+            text: 'Account created successfully! Please check your email for verification.',
+          });
+        } else {
+          setMessage({ type: 'error', text: result.error });
+        }
       }
     } catch (error) {
-      console.error('An unexpected error occurred:', error); // Log the error
+      console.error('Unexpected error:', error);
       setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' });
     } finally {
       setLoading(false);
@@ -299,7 +308,6 @@ const AuthPage = () => {
               {!isLogin && selectedRole === Role.Recruiter && (
                 <div className="space-y-6 border-t border-gray-200 pt-6">
                   <h3 className="text-lg font-semibold text-gray-900">Company Information</h3>
-                  
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name *</label>
@@ -393,22 +401,27 @@ const AuthPage = () => {
                   setIsLogin(!isLogin);
                   setMessage(null);
                   setSelectedRole(null);
-                  setFormData({ 
-                    email: '', 
-                    password: '', 
-                    name: '', 
+                  setFormData({
+                    email: '',
+                    password: '',
+                    name: '',
                     confirmPassword: '',
                     companyName: '',
                     phone: '',
                     address: '',
                     website: '',
-                    industry: ''
+                    industry: '',
                   });
                 }}
                 className="text-indigo-600 hover:text-indigo-500 font-semibold"
               >
                 {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
               </button>
+            </div>
+
+            {/* Demo hint */}
+            <div className="mt-4 text-xs text-gray-500 text-center">
+              Demo Dept Login: <strong>ittsec@gmail.com</strong> / <strong>it2026</strong>
             </div>
           </div>
         </div>
