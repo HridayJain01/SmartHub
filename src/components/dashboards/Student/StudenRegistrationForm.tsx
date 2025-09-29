@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StudentData } from '../../types/student';
 import { generateStudentId, validateStep } from '../../utils/studentIdGenerator';
 import ProgressBar from './ProgressBar';
@@ -7,8 +8,10 @@ import ContactInformation from './FormSteps/ContactInformation';
 import AcademicDetails from './FormSteps/AcademicDetails';
 import AdditionalInformation from './FormSteps/AdditionalInformation';
 import DocumentUpload from './FormSteps/DocumentUpload';
+import { supabase } from '../../../lib/supabase';
 
 const StudentRegistrationForm: React.FC = () => {
+  const navigate = useNavigate(); // Initialize navigate
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -133,7 +136,7 @@ const StudentRegistrationForm: React.FC = () => {
 
   const submitForm = async () => {
     const validation = validateStep(currentStep, formData);
-    
+
     if (!validation.isValid) {
       setErrors(validation.errors);
       return;
@@ -145,21 +148,30 @@ const StudentRegistrationForm: React.FC = () => {
         ...formData,
         is_complete: true,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
 
-      // Here you would submit to your database
-      // await submitStudentRegistration(finalData);
-      
+      // Save to local folder
+      const blob = new Blob([JSON.stringify(finalData, null, 2)], { type: 'application/json' });
+      const fileName = `student_${formData.student_id}.json`;
+      const fileURL = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       // Clear saved draft
       localStorage.removeItem('student_registration_draft');
-      
-      // Show success message or redirect
-      alert(`Registration completed successfully! Your Student ID is: ${formData.student_id}`);
-      
+
+      // Redirect to dashboard
+      alert('Registration completed successfully!');
+      navigate('/student/dashboard');
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setErrors(['An error occurred while submitting the form. Please try again.']);
+      console.error('Submission Error:', error);
+      setErrors(['An error occurred while saving the form. Please try again.']);
     } finally {
       setIsLoading(false);
     }

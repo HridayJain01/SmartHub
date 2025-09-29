@@ -23,19 +23,19 @@ import {
   XCircle
 } from 'lucide-react';
 import DashboardLayout from '../layout/DashboardLayout';
-import { useAuth } from '../../contexts/AuthContext';
+import dummyUsers from '../../data/dummyUsers.json';
 
 const RecruiterProfile = () => {
-  const { user } = useAuth();
+  const dummyRecruiter = dummyUsers.users.find((user) => user.role === 'recruiter');
   const [profileData, setProfileData] = useState({
-    recruiterName: user?.name || 'John Smith',
-    companyName: 'TechCorp Solutions',
-    email: user?.email || 'john.smith@techcorp.com',
-    phone: '+1 (555) 123-4567',
-    address: '123 Business District, San Francisco, CA 94105',
-    website: 'https://techcorp.com',
-    industry: 'Technology',
-    verificationStatus: 'Verified' as 'Pending' | 'Verified' | 'Rejected'
+    recruiterName: dummyRecruiter?.name || '',
+    companyName: dummyRecruiter?.companyName || '',
+    email: dummyRecruiter?.email || '',
+    phone: dummyRecruiter?.phone || '',
+    address: dummyRecruiter?.address || '',
+    website: dummyRecruiter?.website || '',
+    industry: dummyRecruiter?.industry || '',
+    verificationStatus: 'Verified' as 'Pending' | 'Verified' | 'Rejected',
   });
 
   const [editMode, setEditMode] = useState(false);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StudentData } from '../../../types/student';
 
 interface DocumentUploadProps {
@@ -12,14 +12,32 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
   onChange,
   errors
 }) => {
+  const [folderPath, setFolderPath] = useState<string | null>(null);
+
   const handleFileUpload = (field: string, file: File | null) => {
-    // This would typically upload to a storage service and return a URL
-    // For now, we'll just store the file reference
-    const documents = data.documents_uploaded || {};
-    onChange('documents_uploaded', {
-      ...documents,
-      [field]: !!file
+    if (!file) return;
+
+    const folderName = `uploads/${data.id || 'student'}`; // Create a folder based on student ID
+    const filePath = `${folderName}/${field}_${file.name}`;
+
+    // Simulate saving the file locally
+    saveFileLocally(file, filePath).then(() => {
+      const documents = data.documents_uploaded || {};
+      onChange('documents_uploaded', {
+        ...documents,
+        [field]: filePath
+      });
+
+      // Update folder path in state and database
+      setFolderPath(folderName);
+      // onChange('folder_link', folderName);
     });
+  };
+
+  const saveFileLocally = async (file: File, path: string) => {
+    // Simulate saving the file locally (replace with actual implementation)
+    console.log(`Saving file to ${path}`);
+    return new Promise((resolve) => setTimeout(resolve, 500));
   };
 
   const documentCategories = [

@@ -12,7 +12,9 @@ import {
   CheckCircle,
   AlertCircle,
 } from 'lucide-react';
-import { useAuth, Role } from '../contexts/AuthContext';
+import { Role } from '../contexts/AuthContext';
+import dummyUsers from '../data/dummyUsers.json';
+import { useAuth } from '../contexts/AuthContext';
 
 /** UI state for toast message */
 interface MessageState {
@@ -37,7 +39,7 @@ const ROLE_CARDS: RoleCard[] = [
     icon: UserIcon,
     description: 'Build your verified academic profile',
     color: 'from-blue-500 to-indigo-600',
-    redirectPath: '/student',
+    redirectPath: '/student/dashboard',
   },
   {
     id: Role.Institution,
@@ -61,87 +63,88 @@ const ROLE_CARDS: RoleCard[] = [
     icon: Users,
     description: 'Discover verified talent',
     color: 'from-orange-500 to-red-600',
-    redirectPath: '/recruiter',
+    redirectPath: '/recruiter/dashboard',
   },
 ];
 
-export default function AuthPage() {
+const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-  const [formData, setFormData] = useState({ 
-    email: '', 
-    password: '', 
-    name: '', 
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
     confirmPassword: '',
-    // Recruiter-specific fields
     companyName: '',
     phone: '',
     address: '',
     website: '',
-    industry: ''
+    industry: '',
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<MessageState | null>(null);
 
-  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+  const { signIn } = useAuth(); // Use the signIn method from AuthContext
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted:', formData);
     setLoading(true);
     setMessage(null);
 
     try {
       if (isLogin) {
+        console.log('Attempting login...');
         const result = await signIn(formData.email, formData.password);
         if (result.success) {
+          console.log('Login successful:', result.user);
           const roleCard = ROLE_CARDS.find((r) => r.id === result.user.role);
-          navigate(roleCard ? roleCard.redirectPath : '/');
+          const redirectPath = roleCard ? roleCard.redirectPath : '/';
+          console.log('Redirecting to:', redirectPath);
+          navigate(redirectPath); // Redirect after successful login
         } else {
+          console.log('Login failed:', result.error);
           setMessage({ type: 'error', text: result.error });
         }
       } else {
+        console.log('Attempting signup...');
         if (formData.password.length < 6) {
+          console.log('Signup failed: Password too short');
           setMessage({ type: 'error', text: 'Password must be at least 6 characters long' });
           return;
         }
         if (formData.password !== formData.confirmPassword) {
+          console.log('Signup failed: Passwords do not match');
           setMessage({ type: 'error', text: 'Passwords do not match' });
           return;
         }
         if (!selectedRole) {
+          console.log('Signup failed: Role not selected');
           setMessage({ type: 'error', text: 'Please select a role' });
           return;
         }
-        if (selectedRole === Role.Recruiter) {
-          if (!formData.companyName.trim()) {
-            setMessage({ type: 'error', text: 'Company name is required for recruiters' });
-            return;
-          }
-          if (!formData.industry.trim()) {
-            setMessage({ type: 'error', text: 'Industry is required for recruiters' });
-            return;
-          }
-        }
-
-        const result = await signUp(formData.email, formData.password, selectedRole, formData.name, {
-          companyName: formData.companyName,
-          phone: formData.phone,
-          address: formData.address,
-          website: formData.website,
-          industry: formData.industry
-        });
-        if (result.success) {
-          setMessage({
-            type: 'success',
-            text: 'Account created successfully! Please check your email for verification.',
-          });
-        } else {
-          setMessage({ type: 'error', text: result.error });
-        }
+        const newUser = {
+          id: dummyUsers.users.length + 1,
+          email: formData.email,
+          password: formData.password,
+          role: selectedRole,
+          name: formData.name,
+          companyName: formData.companyName || '',
+          phone: formData.phone || '',
+          address: formData.address || '',
+          website: formData.website || '',
+          industry: formData.industry || '',
+          isComplete: false,
+        };
+        dummyUsers.users.push(newUser);
+        console.log('Signup successful:', newUser);
+        setMessage({ type: 'success', text: 'Account created successfully! You can now log in.' });
+        setIsLogin(true);
       }
-    } catch {
-      setMessage({ type: 'error', text: 'An unexpected error occurred' });
+    } catch (error) {
+      console.error('An unexpected error occurred:', error); // Log the error
+      setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' });
     } finally {
       setLoading(false);
     }
@@ -412,4 +415,6 @@ export default function AuthPage() {
       </div>
     </div>
   );
-}
+};
+
+export default AuthPage;

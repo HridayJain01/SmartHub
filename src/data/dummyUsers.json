@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "alex.johnson@university.edu",
+      "password": "password123",
+      "role": "student",
+      "name": "Alex Johnson",
+      "companyName": "",
+      "phone": "+1 (555) 123-4567",
+      "address": "123 University Ave, City, Country",
+      "website": "",
+      "industry": "",
+      "isComplete": true
+    },
+    {
+      "id": 2,
+      "email": "john.smith@techcorp.com",
+      "password": "recruiter123",
+      "role": "recruiter",
+      "name": "John Smith",
+      "companyName": "TechCorp Solutions",
+      "phone": "+1 (555) 987-6543",
+      "address": "123 Business District, San Francisco, CA 94105",
+      "website": "https://techcorp.com",
+      "industry": "Technology",
+      "isComplete": true
+    },
+    {
+      "id": 3,
+      "email": "admin@institution.edu",
+      "password": "admin123",
+      "role": "institution",
+      "name": "Institution Admin",
+      "companyName": "Tech University",
+      "phone": "+1 (555) 111-2222",
+      "address": "456 Academic Lane, City, Country",
+      "website": "https://techuniversity.edu",
+      "industry": "Education",
+      "isComplete": true
+    }
+  ]
+}
